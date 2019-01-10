@@ -1,12 +1,13 @@
 import * as React from 'react';
+import Todo from '../models/Todo'
 import { TodoItem } from './TodoItem';
 
 export interface TodoListProps {
-  items: any
+  todos: Todo[]
 }
 
 export interface TodoListState {
-  items: any,
+  todos: any,
   deleted: boolean
 }
 
@@ -18,7 +19,7 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     super(props);
 
     this.state = {
-      items: this.props.items,
+      todos: this.props.todos,
       deleted: false
     };
 
@@ -28,7 +29,7 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
   addItem(e: any) {
     e.preventDefault(e);
     
-    let currentItems = this.state.items;
+    let currentItems = this.state.todos;
     let textBox = e.target.previousElementSibling;
 
     if (textBox.value) {
@@ -36,7 +37,7 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
       textBox.value = "";
 
       this.setState({
-        items: currentItems
+        todos: currentItems
       });
     }
   }
@@ -45,15 +46,16 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     // event.preventDefault();
 
     let currentItem = e.target.textContent;
-    let updatedItems = this.state.items.filter((item: string) => {
+    let updatedItems = this.state.todos.filter((item: string) => {
       return currentItem !== item;
     });
 
     // let updatedItems = this.state.items.filter((item:any) => item !== name);
 
     this.setState({
-      items: updatedItems
+      todos: updatedItems
     });
+    console.log(this.state.todos);
 
     !this.state.deleted && this.setState({
       deleted: true
@@ -62,10 +64,11 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
 
   render() {
     let cssTaskItem = "task-item";
-    let taskItems = this.state.items.map((task:string, i:number) => {
-      return <li onClick={this.removeTodo.bind(this)}
-      className={cssTaskItem} 
-      key={cssTaskItem + i}>{task}</li>;
+    let taskItems = this.props.todos.map((item:any) => {
+      // return (<TodoItem title={item.title} summary={item.summary} completed={item.done}/>)
+      return (
+        <TodoItem title={item.title} summary={item.summary} completed={item.done} id={item.id}/>
+      )
     });
     return <div className="todoListMain">
       <div className="header">
@@ -75,7 +78,7 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
           />
           <button onClick={this.addItem.bind(this)}>Add</button>
         </form>
-        {/* <TodoItem items={this.state.items} removeTodo={this.removeTodo}/> */}
+        {/* <TodoItem data={this.state.data} removeTodo={this.removeTodo}/> */}
         <div>{taskItems}</div>
       </div>
     </div>

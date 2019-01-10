@@ -1,12 +1,18 @@
 import * as React from'react';
+import Todo from '../models/Todo'
 
 export interface TodoItemProps {
-  items: any,
-  removeTodo: any
+  title: string,
+  summary: string,
+  completed: boolean,
+  id: number
 }
 
 export interface TodoItemState {
-  items: any,
+  title: string,
+  summary: string,
+  completed: boolean,
+  id: number,
   deleted: boolean
 }
 
@@ -18,16 +24,19 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     super(props);
 
     this.state = {
-      items: this.props.items,
+      title: this.props.title,
+      summary: this.props.summary,
+      completed: this.props.completed,
+      id: this.props.id,
       deleted: false
     }
 
     // this.removeItem = this.removeItem.bind(this);
   }
 
-  removeItem(item: string) {
-    this.props.removeTodo(item);
-  }
+  // removeItem(item: string) {
+  //   this.props.removeTodo(item);
+  // }
 
   // removeItem(e: any) {
   //   e.preventDefault(e);
@@ -48,13 +57,12 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
 
   render() {
     let cssTaskItem = "task-item";
-    let taskItems = this.state.items.map((task:string, i:number) => {
-      return <li
-      className={cssTaskItem} 
-      key={cssTaskItem + i}>{task} <button onClick={(event:any) => {this.removeItem(event)}} key={task}>Delete</button></li>;
-    });
     return (
-      <div>{taskItems}</div>
+      <li>
+          <h2>{this.state.title}</h2>
+          <p>{this.state.summary}</p>
+          <input type="checkbox" checked={this.state.completed}/>
+        </li>
     );
   }
 }
