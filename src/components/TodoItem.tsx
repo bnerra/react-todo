@@ -59,10 +59,10 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     let cssTaskItem = "task-item";
     return (
       <li>
-          <h2>{this.state.title}</h2>
-          <p>{this.state.summary}</p>
-          <input type="checkbox" checked={this.state.completed}/>
-        </li>
+        <h2>{this.state.title}</h2>
+        <p>{this.state.summary}</p>
+        <input type="checkbox" checked={this.state.completed}/>
+      </li>
     );
   }
 }
