@@ -63,30 +63,14 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     });
 
     console.log(this.state.todos);
-    // e.preventDefault(e);
-    
-    // let currentItems = this.state.todos;
-    // let textBox = e.target.previousElementSibling;
-
-    // if (textBox.value) {
-    //   currentItems.push(textBox.value);
-    //   textBox.value = "";
-
-    //   this.setState({
-    //     todos: currentItems
-    //   });
-    // }
   }
 
   removeTodo(e: any) {
-    // event.preventDefault();
 
     let currentItem = e.target.textContent;
     let updatedItems = this.state.todos.filter((item: string) => {
       return currentItem !== item;
     });
-
-    // let updatedItems = this.state.items.filter((item:any) => item !== name);
 
     this.setState({
       todos: updatedItems
@@ -101,7 +85,6 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
   render() {
     let cssTaskItem = "task-item";
     let taskItems = this.props.todos.map((item:any, index: number) => {
-      // return (<TodoItem title={item.title} summary={item.summary} completed={item.done}/>)
       return (
         <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.done} id={item.id}/>
       )

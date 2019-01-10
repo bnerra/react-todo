@@ -30,30 +30,8 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
       id: this.props.id,
       deleted: false
     }
-
-    // this.removeItem = this.removeItem.bind(this);
+    
   }
-
-  // removeItem(item: string) {
-  //   this.props.removeTodo(item);
-  // }
-
-  // removeItem(e: any) {
-  //   e.preventDefault(e);
-
-  //   let currentItem = e.target.textContent;
-  //   let updatedItems = this.state.items.filter((item: string) => {
-  //     return currentItem !== item;
-  //   });
-
-  //   this.setState({
-  //     items: updatedItems
-  //   });
-
-  //   !this.state.deleted && this.setState({
-  //     deleted: true
-  //   })
-  // }
 
   render() {
     let cssTaskItem = "task-item";
