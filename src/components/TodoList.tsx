@@ -37,12 +37,20 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     this.setState({...this.state, [event.currentTarget.name]: event.currentTarget.value })
   }
 
+  public assignId() {
+    if (this.state.todos.length < 1) {
+      return 1;
+    } else {
+      return this.state.todos[this.state.todos.length - 1].id +1;
+    }
+  }
+
   public addTodo(e: any) {
 
     e.preventDefault();
 
     this.state.todos.push({
-      id: this.state.todos[this.state.todos.length - 1].id +1,
+      id: this.assignId(),
       title: this.state.addTodoTitle,
       summary: this.state.addTodoSummary,
       done: false
@@ -57,28 +65,19 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     console.log(this.state.todos);
   }
 
-  public removeTodo(e: any) {
-
-    let currentItem = e.target.textContent;
-    let updatedItems = this.state.todos.filter((item: string) => {
-      return currentItem !== item;
-    });
+  public removeTodo(index: number) {
+    this.state.todos.splice(index, 1);
 
     this.setState({
-      todos: updatedItems
-    });
-    console.log(this.state.todos);
-
-    !this.state.deleted && this.setState({
-      deleted: true
+      todos: this.state.todos
     })
+    console.log(this.state.todos);
   }
 
   render() {
-    let cssTaskItem = "task-item";
     let taskItems = this.props.todos.map((item:any, index: number) => {
       return (
-        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.done} id={item.id}/>
+        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.done} id={item.id} remove={() => this.removeTodo(index)}/>
       )
     });
     return (

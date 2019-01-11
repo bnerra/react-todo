@@ -1,11 +1,11 @@
 import * as React from'react';
-import Todo from '../models/Todo'
 
 export interface TodoItemProps {
   title: string,
   summary: string,
   completed: boolean,
   id: number
+  remove: () => void
 }
 
 export interface TodoItemState {
@@ -33,13 +33,18 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     
   }
 
+  toggleCompleted() {
+    this.setState({ completed: !this.state.completed })
+  }
+
   render() {
     let cssTaskItem = "task-item";
     return (
       <li>
         <h2>{this.state.title}</h2>
         <p>{this.state.summary}</p>
-        <input type="checkbox" checked={this.state.completed}/>
+        <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted}/>
+        <button onClick={this.props.remove}>Delete</button>
       </li>
     );
   }
