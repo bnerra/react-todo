@@ -26,23 +26,15 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
       addTodoSummary: '',
       deleted: false
     };
-    this.addTodoTitleChange = this.addTodoTitleChange.bind(this);
-    this.addTodoSummaryChange = this.addTodoSummaryChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.addTodo = this.addTodo.bind(this);
 
     this.removeTodo = this.removeTodo.bind(this);
   }
 
-  public addTodoTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      addTodoTitle: event.target.value
-    });
-  }
-
-  public addTodoSummaryChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    this.setState({
-      addTodoSummary: event.target.value
-    });
+  public handleChange(event: React.SyntheticEvent<{name: string, value: string}>) {
+    event.preventDefault();
+    this.setState({...this.state, [event.currentTarget.name]: event.currentTarget.value })
   }
 
   public addTodo(e: any) {
@@ -65,7 +57,7 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     console.log(this.state.todos);
   }
 
-  removeTodo(e: any) {
+  public removeTodo(e: any) {
 
     let currentItem = e.target.textContent;
     let updatedItems = this.state.todos.filter((item: string) => {
@@ -94,8 +86,8 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
         <div className="header">
           <h3>Add New Todo:</h3>
           <form>
-            <label>Title:</label><input type="text" value={this.state.addTodoTitle} onChange={this.addTodoTitleChange} placeholder="Enter task"/>
-            <label>Description</label><textarea value={this.state.addTodoSummary} onChange={this.addTodoSummaryChange}></textarea>
+            <label>Title:</label><input type="text" name="addTodoTitle" value={this.state.addTodoTitle} onChange={this.handleChange} placeholder="Enter task"/>
+            <label>Description</label><textarea name="addTodoSummary" value={this.state.addTodoSummary} onChange={this.handleChange}></textarea>
             <button onClick={this.addTodo}>Add</button>
           </form>
           <ul>{taskItems}</ul>
