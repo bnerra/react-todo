@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Todo from '../models/Todo'
+import { Utils } from "../utils";
 import { TodoItem } from './TodoItem';
 
 export interface TodoListProps {
@@ -37,20 +38,12 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     this.setState({...this.state, [event.currentTarget.name]: event.currentTarget.value })
   }
 
-  public assignId() {
-    if (this.state.todos.length < 1) {
-      return 1;
-    } else {
-      return this.state.todos[this.state.todos.length - 1].id +1;
-    }
-  }
-
   public addTodo(e: any) {
 
     e.preventDefault();
 
     this.state.todos.push({
-      id: this.assignId(),
+      id: Utils.uuid(),
       title: this.state.addTodoTitle,
       summary: this.state.addTodoSummary,
       done: false

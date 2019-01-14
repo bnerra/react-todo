@@ -51,15 +51,9 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
   }
 
   render() {
-    let cssTaskItem = "task-item";
     return (
       <li>
         { this.state.inEditMode ? <div><input type="text" name="title" value={this.state.title} onChange={this.editTodo} /> <textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea></div> : <div><h2>{this.state.title}</h2><p>{this.state.summary}</p> <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></div> }
-
-        {/* <h2>{this.state.title}</h2>
-        <p>{this.state.summary}</p> */}
-        {/* <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted}/> */}
-        {/* <input type="text" name="title" value={this.state.title} onChange={this.editTodo}/><textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea> */}
         <button onClick={this.toggleEditMode}>{this.state.inEditMode ? 'Stop Editing' : 'Edit'}</button>
         <button onClick={this.props.remove}>Delete</button>
       </li>
