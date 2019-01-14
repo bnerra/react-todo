@@ -4,7 +4,8 @@ export interface TodoItemProps {
   title: string,
   summary: string,
   completed: boolean,
-  id: number
+  id: number,
+  update: (obj: any) => void,
   remove: () => void
 }
 
@@ -45,6 +46,8 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
 
   public editTodo(event: React.SyntheticEvent<{name: string, value: string}>) {
     this.setState({...this.state, [event.currentTarget.name]: event.currentTarget.value});
+
+    this.props.update({...this.state, [event.currentTarget.name]: event.currentTarget.value});
   }
 
   render() {

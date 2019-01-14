@@ -65,6 +65,14 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
     console.log(this.state.todos);
   }
 
+  public updateTodo(obj: any, index: number) {
+    this.state.todos[index] = {
+      id: this.state.todos[index].id,
+      title: obj.title,
+      summary: obj.summary
+    }
+  }
+
   public removeTodo(index: number) {
     this.state.todos.splice(index, 1);
 
@@ -77,7 +85,7 @@ export class TodoList extends React.Component <TodoListProps, TodoListState> {
   render() {
     let taskItems = this.props.todos.map((item:any, index: number) => {
       return (
-        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.done} id={item.id} remove={() => this.removeTodo(index)}/>
+        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.done} id={item.id} update={(obj: any) => this.updateTodo(obj, index)} remove={() => this.removeTodo(index)}/>
       )
     });
     return (
