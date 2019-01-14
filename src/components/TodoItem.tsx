@@ -13,7 +13,7 @@ export interface TodoItemState {
   summary: string,
   completed: boolean,
   id: number,
-  deleted: boolean
+  inEditMode: boolean
 }
 
 export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
@@ -28,23 +28,22 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
       summary: this.props.summary,
       completed: this.props.completed,
       id: this.props.id,
-      deleted: false
+      inEditMode: false
     }
     this.editTodo = this.editTodo.bind(this);
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.toggleCompleted = this.toggleCompleted.bind(this);
   }
 
-  toggleCompleted() {
+  public toggleCompleted() {
     this.setState({ completed: !this.state.completed })
   }
 
-  editTodo(event: React.SyntheticEvent<{name: string, value: string}>) {
+  public toggleEditMode() {
+    this.setState({ inEditMode: !this.state.inEditMode})
+  }
 
-    let change = {
-      title: this.state.title,
-      summary: this.state.summary
-    };
-
-    // change[key] = event.target.value;
+  public editTodo(event: React.SyntheticEvent<{name: string, value: string}>) {
     this.setState({...this.state, [event.currentTarget.name]: event.currentTarget.value});
   }
 
@@ -52,10 +51,13 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     let cssTaskItem = "task-item";
     return (
       <li>
-        <h2>{this.state.title}</h2>
-        <p>{this.state.summary}</p>
-        <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted}/>
-        <input type="text" name="title" value={this.state.title} onChange={this.editTodo}/><textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea>
+        { this.state.inEditMode ? <div><input type="text" name="title" value={this.state.title} onChange={this.editTodo} /> <textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea></div> : <div><h2>{this.state.title}</h2><p>{this.state.summary}</p> <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></div> }
+
+        {/* <h2>{this.state.title}</h2>
+        <p>{this.state.summary}</p> */}
+        {/* <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted}/> */}
+        {/* <input type="text" name="title" value={this.state.title} onChange={this.editTodo}/><textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea> */}
+        <button onClick={this.toggleEditMode}>{this.state.inEditMode ? 'Stop Editing' : 'Edit'}</button>
         <button onClick={this.props.remove}>Delete</button>
       </li>
     );
