@@ -1,5 +1,8 @@
 import * as React from'react';
 
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+
 export interface TodoItemProps {
   title: string,
   summary: string,
@@ -52,11 +55,15 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
 
   render() {
     return (
-      <li>
-        { this.state.inEditMode ? <div><input type="text" name="title" value={this.state.title} onChange={this.editTodo} /> <textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea></div> : <div><h2>{this.state.title}</h2><p>{this.state.summary}</p> <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></div> }
-        <button onClick={this.toggleEditMode}>{this.state.inEditMode ? 'Stop Editing' : 'Edit'}</button>
-        <button onClick={this.props.remove}>Delete</button>
-      </li>
+      <TableRow>
+        <TableCell><input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></TableCell>
+        <TableCell><h2>{this.state.title}</h2></TableCell>
+        <TableCell><p>{this.state.summary}</p></TableCell>
+        <TableCell align="right"><button onClick={this.toggleEditMode}>{this.state.inEditMode ? 'Stop Editing' : 'Edit'}</button></TableCell>
+        <TableCell align="right"><button onClick={this.props.remove}>Delete</button></TableCell>
+      </TableRow>
+
+        // {/* { this.state.inEditMode ? <div><input type="text" name="title" value={this.state.title} onChange={this.editTodo} /> <textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea></div> : <div><h2>{this.state.title}</h2><p>{this.state.summary}</p> <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></div> } */}
     );
   }
 }
