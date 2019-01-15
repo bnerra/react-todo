@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Hello } from './Hello';
-import { TodoList } from './TodoList';
+import TodoList from './TodoList';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 export class App extends React.Component<{}> {
   render() {
@@ -24,9 +25,11 @@ export class App extends React.Component<{}> {
         done: false
       }
     ];
-    return <div>
-      <Hello compiler="TypeScript" framework="React"/>
-      <TodoList todos={todos}/>
-    </div>
+    return (
+      <div>
+        <CssBaseline />
+        <TodoList todos={todos}/>
+      </div>
+    )
   }
 }
