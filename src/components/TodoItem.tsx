@@ -3,6 +3,8 @@ import * as React from'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
+import TextField from '@material-ui/core/TextField';
+
 export interface TodoItemProps {
   title: string,
   summary: string,
@@ -54,16 +56,25 @@ export class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
   }
 
   render() {
+    let isComplete = this.state.completed ? 'complete' : '';
+    var titleDisplay;
+    var summaryDisplay;
+
+    if (this.state.inEditMode) {
+      titleDisplay = <TextField name="title" value={this.state.title} onChange={this.editTodo}></TextField>;
+      summaryDisplay = <TextField name="summary" value={this.state.summary} onChange={this.editTodo}></TextField>;
+    } else {
+      titleDisplay = <h2>{this.state.title}</h2>;
+      summaryDisplay = <p>{this.state.summary}</p>;
+    }
     return (
       <TableRow>
         <TableCell><input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></TableCell>
-        <TableCell><h2>{this.state.title}</h2></TableCell>
-        <TableCell><p>{this.state.summary}</p></TableCell>
-        <TableCell align="right"><button onClick={this.toggleEditMode}>{this.state.inEditMode ? 'Stop Editing' : 'Edit'}</button></TableCell>
-        <TableCell align="right"><button onClick={this.props.remove}>Delete</button></TableCell>
+        <TableCell>{titleDisplay}</TableCell>
+        <TableCell>{summaryDisplay}</TableCell>
+        <TableCell><button onClick={this.toggleEditMode}>{this.state.inEditMode ? 'Stop Editing' : 'Edit'}</button></TableCell>
+        <TableCell><button onClick={this.props.remove}>Delete</button></TableCell>
       </TableRow>
-
-        // {/* { this.state.inEditMode ? <div><input type="text" name="title" value={this.state.title} onChange={this.editTodo} /> <textarea name="summary" value={this.state.summary} onChange={this.editTodo}></textarea></div> : <div><h2>{this.state.title}</h2><p>{this.state.summary}</p> <input type="checkbox" checked={this.state.completed} onChange={this.toggleCompleted} /></div> } */}
     );
   }
 }

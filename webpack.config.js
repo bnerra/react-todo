@@ -13,6 +13,8 @@ module.exports = {
     filename: "bundle.js"
   },
 
+  mode: "development",
+
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
 
