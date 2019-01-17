@@ -8,6 +8,8 @@
     "jsx": "react"
   },
   "include": [
-    "./src/**/*"
+    "src",
+    // "./src/**/*",
+    "./defs.d.ts"
   ]
 }
