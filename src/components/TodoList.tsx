@@ -22,24 +22,20 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export namespace TodoList {
-  export interface TodoListProps extends WithStyles<typeof styles> {
-    todos: Todo[]
-  }
-  
-  export interface TodoListState {
-    todos: any,
-    addTodoTitle: string,
-    addTodoSummary: string,
-    dialogOpen: boolean
-  }
+export interface TodoListProps {
+  todos: Todo[]
 }
 
+export interface TodoListState {
+  todos: any,
+  addTodoTitle: string,
+  addTodoSummary: string,
+  dialogOpen: boolean
+}
 
+class TodoList extends React.Component <TodoListProps, TodoListState> {
 
-class TodoList extends React.Component <TodoList.TodoListProps, TodoList.TodoListState> {
-
-  public state: TodoList.TodoListState;
+  public state: TodoListState;
 
   constructor(props: any) {
     super(props);
@@ -111,7 +107,7 @@ class TodoList extends React.Component <TodoList.TodoListProps, TodoList.TodoLis
   }
 
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     let todoDialog = 
         <div>
@@ -169,18 +165,3 @@ class TodoList extends React.Component <TodoList.TodoListProps, TodoList.TodoLis
     )
   }
 }
-
-const styles = (theme: Theme) => createStyles({
-  addButton: {
-    color: 'red'
-  },
-  textField: {
-    width: '100%'
-  },
-  tableRoot: {
-    width: '100%',
-    overflowX: 'auto'
-  }
-})
-
-export default withStyles(styles)(TodoList);
