@@ -1,14 +1,15 @@
 import * as React from 'react';
-import Todo from '../models/Todo'
-import { Utils } from "../utils";
-import { TodoItem } from './TodoItem';
+import styles from "./TodoListStyles";
+import Todo from '../../models/Todo'
+import { Utils } from "../../utils";
+import { TodoItem } from '../TodoItem';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles, withStyles } from '@material-ui/core/styles';
 
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -19,27 +20,22 @@ import TableCell from '@material-ui/core/TableCell';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export namespace TodoList {
-  export interface TodoListProps extends WithStyles<typeof styles> {
-    todos: Todo[]
-  }
-  
-  export interface TodoListState {
-    todos: any,
-    addTodoTitle: string,
-    addTodoSummary: string,
-    dialogOpen: boolean
-  }
+export interface TodoListProps extends WithStyles<typeof styles> {
+  todos: Todo[]
 }
 
+export interface TodoListState {
+  todos: any,
+  addTodoTitle: string,
+  addTodoSummary: string,
+  dialogOpen: boolean
+}
 
+class TodoList extends React.Component <TodoListProps, TodoListState> {
 
-class TodoList extends React.Component <TodoList.TodoListProps, TodoList.TodoListState> {
-
-  public state: TodoList.TodoListState;
+  public state: TodoListState;
 
   constructor(props: any) {
     super(props);
@@ -169,18 +165,5 @@ class TodoList extends React.Component <TodoList.TodoListProps, TodoList.TodoLis
     )
   }
 }
-
-const styles = (theme: Theme) => createStyles({
-  addButton: {
-    color: 'red'
-  },
-  textField: {
-    width: '100%'
-  },
-  tableRoot: {
-    width: '100%',
-    overflowX: 'auto'
-  }
-})
 
 export default withStyles(styles)(TodoList);
