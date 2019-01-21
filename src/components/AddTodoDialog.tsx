@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Todo from '../models/Todo'
 import { Utils } from "../utils";
-import { TodoItem } from './TodoItem';
+import TodoItem from './todoListItem/TodoItem';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';

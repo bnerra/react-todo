@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from "./TodoListStyles";
 import Todo from '../../models/Todo'
 import { Utils } from "../../utils";
-import { TodoItem } from '../TodoItem';
+import TodoItem from '../todoListItem/TodoItem';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -18,20 +18,27 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+
 
 export interface TodoListProps extends WithStyles<typeof styles> {
-  todos: Todo[]
+  todos: Todo[],
+  fullScreen: boolean
 }
 
 export interface TodoListState {
   todos: any,
   addTodoTitle: string,
   addTodoSummary: string,
-  dialogOpen: boolean
+  dialogOpen: boolean,
 }
+
+
 
 class TodoList extends React.Component <TodoListProps, TodoListState> {
 
@@ -44,15 +51,19 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
       todos: this.props.todos,
       addTodoTitle: '',
       addTodoSummary: '',
-      dialogOpen: false
+      dialogOpen: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.addTodo = this.addTodo.bind(this);
-
     this.removeTodo = this.removeTodo.bind(this);
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+
+  }
+
+  public toggleFullscreen() {
+
   }
 
   public handleClickOpen() {
@@ -72,6 +83,8 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
 
     e.preventDefault();
 
+    if (!this.state.addTodoTitle || this.state.addTodoSummary)
+
     this.state.todos.push({
       id: Utils.uuid(),
       title: this.state.addTodoTitle,
@@ -82,9 +95,9 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     this.setState({
       todos: this.state.todos,
       addTodoTitle: '',
-      addTodoSummary: ''
+      addTodoSummary: '',
+      dialogOpen: false
     });
-    this.handleClose;
 
     console.log(this.state.todos);
   }
@@ -109,27 +122,47 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
   render() {
     const { classes } = this.props;
 
+    const enabled = this.state.addTodoTitle !== '' && this.state.addTodoSummary !== '';
+
     let todoDialog = 
         <div>
-          <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
-            Add New Todo
+          <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+            Add Todo
           </Button>
           <Dialog
+             fullScreen
             open={this.state.dialogOpen}
             onClose={this.handleClose}
             aria-labelledby="add-new-todo"
+            className={classes.dialogBox}
           >
-            <DialogTitle id="add-new-todo">Add New Todo</DialogTitle>
-            <DialogContent>
-              <Grid container spacing={16} direction="column">
-                <Grid item xs={12}><Paper><TextField className={classes.textField} label="Title" name="addTodoTitle" value={this.state.addTodoTitle} onChange={this.handleChange} placeholder="Enter task"></TextField></Paper></Grid>
-                <Grid item xs={12}><Paper><TextField className={classes.textField} label="Description" multiline rows="3" name="addTodoSummary" value={this.state.addTodoSummary} onChange={this.handleChange} placeholder="Enter task summary"></TextField></Paper></Grid>
-              </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose}>Cancel</Button>
-              <Button className={classes.addButton} variant="contained" color="primary" onClick={this.addTodo}>Add<Icon>add</Icon></Button>
-            </DialogActions>
+            <AppBar className={classes.dialogAppBar}>
+              <Toolbar>
+                <Grid container direction="row" justify="space-between" alignItems="center">
+                  <Grid item>
+                    <IconButton color="inherit" onClick={this.handleClose}>
+                      <Icon>close</Icon>
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
+                    <Typography className={classes.dialogTitle} variant="h4">
+                      Add New Todo
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <IconButton color="inherit" disabled={!enabled} onClick={this.addTodo}><Icon>check</Icon></IconButton>
+                  </Grid>
+                </Grid>
+              </Toolbar>
+            </AppBar>
+            <List>
+              <ListItem>
+                <TextField multiline className={classes.textField} label="Title" name="addTodoTitle" value={this.state.addTodoTitle} onChange={this.handleChange} placeholder="Enter task"></TextField>
+              </ListItem>
+              <ListItem>
+                <TextField  className={classes.textField} label="Description" multiline rows="3" name="addTodoSummary" value={this.state.addTodoSummary} onChange={this.handleChange} placeholder="Enter task summary"></TextField>
+              </ListItem>
+            </List>
           </Dialog>
         </div>;
 
@@ -140,11 +173,11 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     });
     return (
       <div className="todoListMain">
-        <Grid container spacing={16} direction="column">
-          <Grid item xs={12}><h2>Todo List:</h2></Grid>
-          <Grid item xs={12}>{todoDialog}</Grid>
+        <Grid container spacing={32} direction="column" alignItems="center" justify="center">
+          <Grid item xs={6}><Typography variant="h3">Todo List:</Typography></Grid>
+          <Grid item xs={6}>{todoDialog}</Grid>
         </Grid><br/>
-        <Grid container spacing={24}>
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
           <Paper className={classes.tableRoot}>
             <Table>
               <TableHead>
@@ -165,5 +198,4 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     )
   }
 }
-
 export default withStyles(styles)(TodoList);
