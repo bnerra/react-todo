@@ -1,6 +1,6 @@
 import * as React from'react';
 import { WithStyles, withStyles } from '@material-ui/core/styles';
-import styles from './TodoListItemStyles'
+import styles from './TodoItemStyles'
 
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';

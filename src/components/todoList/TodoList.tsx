@@ -1,8 +1,10 @@
 import * as React from 'react';
 import styles from "./TodoListStyles";
 import Todo from '../../models/Todo'
+import NewTodo from '../../models/NewTodoModel';
 import { Utils } from "../../utils";
 import TodoItem from '../todoListItem/TodoItem';
+import axios from 'axios';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -25,6 +27,9 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
+//TODO: Componentize Dialog
+//TODO: Componentize TodoTable
+//TODO: Connect to PostgreSQL
 
 export interface TodoListProps extends WithStyles<typeof styles> {
   todos: Todo[],
@@ -36,6 +41,7 @@ export interface TodoListState {
   addTodoTitle: string,
   addTodoSummary: string,
   dialogOpen: boolean,
+  todoData: NewTodo[]
 }
 
 
@@ -52,7 +58,9 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
       addTodoTitle: '',
       addTodoSummary: '',
       dialogOpen: false,
+      todoData: []
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
@@ -62,8 +70,15 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
 
   }
 
-  public toggleFullscreen() {
-
+  componentDidMount() {
+    axios.get('http://localhost:8000/api/todos/')
+      .then(res => {
+        this.setState({ todoData: res.data });
+        console.log("Todo Data: ", this.state.todoData);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   public handleClickOpen() {
@@ -123,6 +138,14 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     const { classes } = this.props;
 
     const enabled = this.state.addTodoTitle !== '' && this.state.addTodoSummary !== '';
+
+    let tabRow = this.state.todoData.map((item: any, index: number) => {
+      return(
+        <TableRow key={index}>
+          <TableCell>{item.title}</TableCell>
+        </TableRow>
+      )
+    });
 
     let todoDialog = 
         <div>
@@ -193,6 +216,21 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
             </Table>
           </Paper>
         </Grid>
+        <div>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>List of Data</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {/* <TableRow>
+                <TableCell>Object Here</TableCell>
+              </TableRow> */}
+              {tabRow}
+            </TableBody>
+          </Table>
+        </div>
 
       </div>
     )
