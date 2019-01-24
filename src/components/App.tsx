@@ -28,7 +28,7 @@ export class App extends React.Component<{}> {
     return (
       <div>
         <CssBaseline />
-        <TodoList todos={todos} />
+        <TodoList />
       </div>
     )
   }

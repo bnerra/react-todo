@@ -1,6 +1,7 @@
 import * as React from'react';
 import { WithStyles, withStyles } from '@material-ui/core/styles';
 import styles from './TodoItemStyles'
+import axios from 'axios';
 
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -46,6 +47,7 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     this.editTodo = this.editTodo.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
     this.toggleCompleted = this.toggleCompleted.bind(this);
+    this.updateTodo = this.updateTodo.bind(this);
   }
 
   public toggleCompleted() {
@@ -61,6 +63,23 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
 
     this.props.update({...this.state, [event.currentTarget.name]: event.currentTarget.value});
   }
+
+  public updateTodo() {
+
+    let payload = {
+      "title": this.state.title,
+      "summary": this.state.summary 
+    };
+
+    let id = this.state.id;
+
+    axios.put("http://localhost:8000/api/todos/?id="+ id, payload)
+        .then(res => {
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+  } 
 
   render() {
     const { classes } = this.props;
@@ -80,7 +99,7 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
         <TableCell><Checkbox checked={this.state.completed} onChange={this.toggleCompleted} /></TableCell>
         <TableCell className={this.state.completed ? classes.isCompleted : ''}>{titleDisplay}</TableCell>
         <TableCell className={this.state.completed ? classes.isCompleted : ''}>{summaryDisplay}</TableCell>
-        <TableCell><IconButton onClick={this.toggleEditMode}>{this.state.inEditMode ? <Icon>check</Icon> : <Icon>create</Icon>}</IconButton></TableCell>
+        <TableCell><IconButton onClick={this.toggleEditMode}>{this.state.inEditMode ? <Icon onClick={this.updateTodo}>check</Icon> : <Icon>create</Icon>}</IconButton></TableCell>
         <TableCell><IconButton onClick={this.props.remove}><Icon>delete_forever</Icon></IconButton></TableCell>
       </TableRow>
     );

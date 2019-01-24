@@ -2,9 +2,13 @@ import * as React from 'react';
 import styles from "./TodoListStyles";
 import Todo from '../../models/Todo'
 import NewTodo from '../../models/NewTodoModel';
+import NewTodoItem from '../../models/TodoItemModel';
 import { Utils } from "../../utils";
 import TodoItem from '../todoListItem/TodoItem';
 import axios from 'axios';
+import mockData from './mockData';
+import update from 'immutability-helper';
+import * as deepmerge from 'deepmerge';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -26,18 +30,21 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { any } from 'prop-types';
 
 //TODO: Componentize Dialog
 //TODO: Componentize TodoTable
 //TODO: Connect to PostgreSQL
+//TODO: Handle/update isComplete db value
+//TODO: Properly set state
+//TODO: Proper error handling
+//TODO: Data validation
 
 export interface TodoListProps extends WithStyles<typeof styles> {
-  todos: Todo[],
   fullScreen: boolean
 }
 
 export interface TodoListState {
-  todos: any,
   addTodoTitle: string,
   addTodoSummary: string,
   dialogOpen: boolean,
@@ -54,7 +61,6 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     super(props);
 
     this.state = {
-      todos: this.props.todos,
       addTodoTitle: '',
       addTodoSummary: '',
       dialogOpen: false,
@@ -74,7 +80,6 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     axios.get('http://localhost:8000/api/todos/')
       .then(res => {
         this.setState({ todoData: res.data });
-        console.log("Todo Data: ", this.state.todoData);
       })
       .catch((error) => {
         console.log(error);
@@ -98,54 +103,63 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
 
     e.preventDefault();
 
-    if (!this.state.addTodoTitle || this.state.addTodoSummary)
-
-    this.state.todos.push({
-      id: Utils.uuid(),
-      title: this.state.addTodoTitle,
-      summary: this.state.addTodoSummary,
-      done: false
-    });
-
-    this.setState({
-      todos: this.state.todos,
-      addTodoTitle: '',
-      addTodoSummary: '',
-      dialogOpen: false
-    });
-
-    console.log(this.state.todos);
-  }
-
-  public updateTodo(obj: any, index: number) {
-    this.state.todos[index] = {
-      id: this.state.todos[index].id,
-      title: obj.title,
-      summary: obj.summary
+    if (!this.state.addTodoTitle || this.state.addTodoSummary) {
+      let payload = {
+        "title": this.state.addTodoTitle,
+        "summary": this.state.addTodoSummary 
+      };
+  
+      axios.post("http://localhost:8000/api/todos", payload)
+        .then(res => {
+          this.state.todoData.push(res.data);
+          this.setState({
+            todoData: this.state.todoData,
+            addTodoTitle: '',
+            addTodoSummary: '',
+            dialogOpen: false
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     }
   }
 
-  public removeTodo(index: number) {
-    this.state.todos.splice(index, 1);
+  public updateTodo(obj: NewTodo, index: number) {
 
+    this.state.todoData[index] = {
+      id: this.state.todoData[index].id,
+      title: obj.title,
+      summary: obj.summary
+    }
     this.setState({
-      todos: this.state.todos
+      todoData: this.state.todoData
     })
-    console.log(this.state.todos);
+
   }
 
+  public removeTodo(index: number) {
+
+    let id = this.state.todoData[index].id;
+
+    axios.delete("http://localhost:8000/api/todos/?id="+ id)
+        .then(res => {
+          this.state.todoData.splice(index, 1);
+          this.setState({
+            todoData: this.state.todoData
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+  }
+
+
   render() {
+
     const { classes } = this.props;
 
     const enabled = this.state.addTodoTitle !== '' && this.state.addTodoSummary !== '';
-
-    let tabRow = this.state.todoData.map((item: any, index: number) => {
-      return(
-        <TableRow key={index}>
-          <TableCell>{item.title}</TableCell>
-        </TableRow>
-      )
-    });
 
     let todoDialog = 
         <div>
@@ -189,9 +203,9 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
           </Dialog>
         </div>;
 
-    let taskItems = this.props.todos.map((item:any, index: number) => {
+    let taskItems = this.state.todoData.map((item: NewTodo, index: number) => {
       return (
-        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.done} id={item.id} update={(obj: any) => this.updateTodo(obj, index)} remove={() => this.removeTodo(index)}/>
+        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.isComplete} id={item.id} update={(obj: any) => this.updateTodo(obj, index)} remove={() => this.removeTodo(index)}/>
       )
     });
     return (
@@ -216,22 +230,6 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
             </Table>
           </Paper>
         </Grid>
-        <div>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>List of Data</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {/* <TableRow>
-                <TableCell>Object Here</TableCell>
-              </TableRow> */}
-              {tabRow}
-            </TableBody>
-          </Table>
-        </div>
-
       </div>
     )
   }
