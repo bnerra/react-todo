@@ -7,7 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
@@ -56,8 +55,6 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     this.setState({ completed: !this.state.completed });
 
     this.props.complete({...this.state, [event.currentTarget.name]: event.currentTarget.checked});
-
-    // console.log("boolean", event.currentTarget.checked);
 
     this.updateComplete(event.currentTarget.checked);
   }

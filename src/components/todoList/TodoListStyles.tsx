@@ -5,21 +5,6 @@ const styles = (theme: Theme) => createStyles({
     color: 'white',
     fontSize: '16px'
   },
-  dialogAppBar: {
-    backgroundColor: '#2196f3',
-    position: 'relative'
-  },
-  dialogBox: {
-    height: '150vh',
-    paddingtop: 0
-  },
-  dialogTitle: {
-    color: 'white'
-  },
-  textField: {
-    width: '100%',
-    marginTop: '5px',
-  },
   tableRoot: {
     width: '75%',
     overflowX: 'auto'
