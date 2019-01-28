@@ -30,7 +30,7 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
     update(req, res) {
-        console.log("Summary: ", req.body.summary);
+        // console.log("Summary: ", req.body.summary);
         return Todo
             .findByPk(req.query.id)
             .then(todo => {
@@ -46,6 +46,24 @@ module.exports = {
                     })
                     .then(() => res.status(200).send(todo))
                     .catch((error) => res.status(400).send(error));
+            })
+            .catch((error) => res.status(400).send(error));
+    },
+    updateComplete(req, res) {
+        return Todo
+            .findByPk(req.query.id)
+            .then(todo => {
+                if (!todo) {
+                    return res.status(404).send({
+                        message: 'Todo Not Found',
+                    });
+                }
+                return todo
+                    .update({
+                        isComplete: !todo.isComplete
+                    })
+                    .then(() => res.status(200).send(todo))
+                    .catch((error) => {res.status(400).send(error); console.log(error)});
             })
             .catch((error) => res.status(400).send(error));
     },

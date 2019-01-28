@@ -34,7 +34,6 @@ import { any } from 'prop-types';
 
 //TODO: Componentize Dialog
 //TODO: Componentize TodoTable
-//TODO: Handle/update isComplete db value
 //TODO: Properly set state
 //TODO: Proper error handling
 //TODO: Data validation
@@ -217,6 +216,8 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
             </List>
           </Dialog>
         </div>;
+
+    this.state.todoData.sort((a: any,b: any) => { return a.isComplete - b.isComplete});
 
     let taskItems = this.state.todoData.map((item: NewTodo, index: number) => {
       return (

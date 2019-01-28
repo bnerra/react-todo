@@ -17,6 +17,7 @@ module.exports = (app) => {
     // GET, UPDATE, DELETE todos by todoId
     app.get('/api/todos/:id?', todosController.retrieve);
     app.put('/api/todos/:id?', todosController.update);
+    app.put('/api/todoComplete/:id?', todosController.updateComplete);
     app.delete('/api/todos/:id?', todosController.destroy);
 
     // For any other request method, return "Method Not Allowed"

@@ -49,12 +49,17 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     this.toggleEditMode = this.toggleEditMode.bind(this);
     this.toggleCompleted = this.toggleCompleted.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
+    this.updateComplete = this.updateComplete.bind(this);
   }
 
   public toggleCompleted(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ completed: !this.state.completed });
 
     this.props.complete({...this.state, [event.currentTarget.name]: event.currentTarget.checked});
+
+    // console.log("boolean", event.currentTarget.checked);
+
+    this.updateComplete(event.currentTarget.checked);
   }
 
   public toggleEditMode() {
@@ -82,7 +87,25 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
         .catch((error) => {
           console.log(error);
         })
-  } 
+  }
+
+  public updateComplete(bool: boolean) {
+
+    console.log("status", bool);
+
+    let payload = {
+      "isComplete": bool
+    };
+
+    let id = this.state.id;
+
+    axios.put("http://localhost:8000/api/todoComplete/?id=" + id)
+      .then(res => {
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
 
   render() {
     const { classes } = this.props;
