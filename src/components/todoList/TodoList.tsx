@@ -34,7 +34,6 @@ import { any } from 'prop-types';
 
 //TODO: Componentize Dialog
 //TODO: Componentize TodoTable
-//TODO: Connect to PostgreSQL
 //TODO: Handle/update isComplete db value
 //TODO: Properly set state
 //TODO: Proper error handling
@@ -70,6 +69,7 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     this.handleChange = this.handleChange.bind(this);
     this.addTodo = this.addTodo.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
+    this.toggleComplete = this.toggleComplete.bind(this);
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -130,7 +130,8 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     this.state.todoData[index] = {
       id: this.state.todoData[index].id,
       title: obj.title,
-      summary: obj.summary
+      summary: obj.summary,
+      isComplete: obj.isComplete
     }
     this.setState({
       todoData: this.state.todoData
@@ -152,6 +153,20 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
         .catch((error) => {
           console.log(error);
         })
+  }
+
+  public toggleComplete(obj: NewTodo, index: number) {
+
+    this.state.todoData[index] = {
+      id: this.state.todoData[index].id,
+      title: obj.title,
+      summary: obj.summary,
+      isComplete: obj.isComplete
+    }
+    this.setState({
+      todoData: this.state.todoData
+    })
+
   }
 
 
@@ -205,7 +220,7 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
 
     let taskItems = this.state.todoData.map((item: NewTodo, index: number) => {
       return (
-        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.isComplete} id={item.id} update={(obj: any) => this.updateTodo(obj, index)} remove={() => this.removeTodo(index)}/>
+        <TodoItem key={item.id} title={item.title} summary={item.summary} completed={item.isComplete} id={item.id} update={(obj: any) => this.updateTodo(obj, index)} complete={(obj: any) => this.toggleComplete(obj, index)} remove={() => this.removeTodo(index)}/>
       )
     });
     return (

@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server --progress",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "run-p server dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon ./server/bin/www",
+    "dev": "./node_modules/.bin/webpack-dev-server --progress",
+    "build": ""
   },
   "author": "nberra",
   "license": "ISC",
@@ -30,6 +33,7 @@
     "css-loader": "^2.1.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "mini-css-extract-plugin": "^0.5.0",
+    "npm-run-all": "^4.1.5",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "typescript": "^3.2.2",

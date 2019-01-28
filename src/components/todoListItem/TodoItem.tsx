@@ -19,6 +19,7 @@ export interface TodoItemProps extends WithStyles<typeof styles>{
   completed: boolean,
   id: number,
   update: (obj: any) => void,
+  complete: (obj: any) => void,
   remove: () => void
 }
 
@@ -50,8 +51,10 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     this.updateTodo = this.updateTodo.bind(this);
   }
 
-  public toggleCompleted() {
-    this.setState({ completed: !this.state.completed })
+  public toggleCompleted(event: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({ completed: !this.state.completed });
+
+    this.props.complete({...this.state, [event.currentTarget.name]: event.currentTarget.checked});
   }
 
   public toggleEditMode() {
@@ -96,7 +99,7 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
     }
     return (
       <TableRow>
-        <TableCell><Checkbox checked={this.state.completed} onChange={this.toggleCompleted} /></TableCell>
+        <TableCell><Checkbox name="isComplete" checked={this.state.completed} onChange={this.toggleCompleted} /></TableCell>
         <TableCell className={this.state.completed ? classes.isCompleted : ''}>{titleDisplay}</TableCell>
         <TableCell className={this.state.completed ? classes.isCompleted : ''}>{summaryDisplay}</TableCell>
         <TableCell><IconButton onClick={this.toggleEditMode}>{this.state.inEditMode ? <Icon onClick={this.updateTodo}>check</Icon> : <Icon>create</Icon>}</IconButton></TableCell>
