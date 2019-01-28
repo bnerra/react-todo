@@ -1,37 +1,15 @@
 import * as React from 'react';
 import styles from "./TodoListStyles";
-import Todo from '../../models/Todo'
 import NewTodo from '../../models/NewTodoModel';
-import NewTodoItem from '../../models/TodoItemModel';
-import { Utils } from "../../utils";
 import TodoItem from '../todoListItem/TodoItem';
-import AddDialog from '../addDialog/AddDialog'
+import AddDialog from '../addDialog/AddDialog';
+import TodoTable from '../todoTable/TodoTable';
 import axios from 'axios';
-import mockData from './mockData';
-import update from 'immutability-helper';
-import * as deepmerge from 'deepmerge';
 
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import { WithStyles, withStyles } from '@material-ui/core/styles';
 
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import { any } from 'prop-types';
 
 //TODO: Componentize TodoTable
 //TODO: Properly set state
@@ -144,23 +122,8 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
         <Grid container spacing={32} direction="column" alignItems="center" justify="center">
           <Grid item xs={6}><Typography variant="h3">Todo List:</Typography></Grid>
           <Grid item xs={6}><AddDialog add={(e: any) => this.addTodo(e)}/></Grid>
-        </Grid><br/>
-        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
-          <Paper className={classes.tableRoot}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Completed</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Edit</TableCell>
-                  <TableCell>Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{taskItems}</TableBody>
-            </Table>
-          </Paper>
         </Grid>
+        <TodoTable taskItems={taskItems}/>
       </div>
     )
   }

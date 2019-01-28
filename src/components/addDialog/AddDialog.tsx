@@ -96,7 +96,7 @@ class AddDialog extends React.Component <AddDialogProps, AddDialogState> {
 
     return (
       <div className="addDialog">
-          <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+          <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
             Add Todo
           </Button>
           <Dialog
