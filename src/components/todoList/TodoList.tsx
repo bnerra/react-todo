@@ -110,6 +110,24 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     return completed;
   }
 
+  public removeCompleted() {
+    const incomplete = this.state.todoData.filter(function(obj) {
+      return obj.isComplete !== true;
+    })
+
+    axios.delete('http://localhost:8000/api/todos')
+      .then(res => {
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+      this.setState({
+        todoData: incomplete
+      })
+  }
+
 
   render() {
 
@@ -123,11 +141,15 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
       )
     });
 
-    let count = 0;
+    let completedCount = 0;
 
-    let todoCount = this.state.todoData.map(x => x.isComplete);
+    let todoCount = 0;
 
-    todoCount.forEach(x => !x ? count++ : x);
+    let bools = this.state.todoData.map(x => x.isComplete);
+
+    bools.forEach(x => !x ? todoCount++ : x);
+
+    bools.forEach(x => x ? completedCount++ : x);
 
     return (
       <div className="todoListMain">
@@ -135,7 +157,7 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
           <Grid item xs={6}><Typography variant="h3">Todo List:</Typography></Grid>
           <Grid item xs={6}><AddDialog add={(e: any) => this.addTodo(e)}/></Grid>
         </Grid>
-        <TodoTable taskItems={taskItems} completedCount={count}/>
+        <TodoTable taskItems={taskItems} todoCount={todoCount} completedCount={completedCount} clearAll={() => this.removeCompleted()}/>
       </div>
     )
   }

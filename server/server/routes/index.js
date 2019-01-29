@@ -13,6 +13,7 @@ module.exports = (app) => {
     // CREATE and LISTALL todos
     app.post('/api/todos', todosController.create);
     app.get('/api/todos', todosController.list);
+    app.delete('/api/todos', todosController.destroyAll)
 
     // GET, UPDATE, DELETE todos by todoId
     app.get('/api/todos/:id?', todosController.retrieve);

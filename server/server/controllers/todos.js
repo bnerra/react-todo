@@ -82,5 +82,35 @@ module.exports = {
                     .catch(error => res.status(400).send(error));
             })
             .catch(error => res.status(400).send(error));
+    },
+    destroyAll(req, res) {
+        return Todo
+            .destroy({
+                where: {
+                    isComplete: true
+                }
+            })
+            .then(() => res.status(204).send())
+            .catch(error => res.status(400).send(error));
     }
+    // destroyAll(req, res) {
+    //     return Todo
+    //         .findAll({
+    //             where: {
+    //                 isComplete: true
+    //             }
+    //         })
+    //         .then( todo => {
+    //             if (!todo) {
+    //                 return res.status(404).send({
+    //                     message: 'Todos not found',
+    //                 });
+    //             }
+    //             return todo
+    //                 .destroy({})
+    //                 .then(() => res.status(204).send())
+    //                 .catch(error => res.status(400).send(error));
+    //         })
+    //         .catch(error => res.status(400).send(error));
+    // }
 };

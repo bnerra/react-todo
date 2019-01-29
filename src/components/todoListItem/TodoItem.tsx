@@ -88,12 +88,6 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
 
   public updateComplete(bool: boolean) {
 
-    console.log("status", bool);
-
-    let payload = {
-      "isComplete": bool
-    };
-
     let id = this.state.id;
 
     axios.put("http://localhost:8000/api/todoComplete/?id=" + id)
@@ -123,7 +117,7 @@ class TodoItem extends React.Component <TodoItemProps, TodoItemState> {
         <TableCell className={this.state.completed ? classes.isCompleted : ''}>{titleDisplay}</TableCell>
         <TableCell className={this.state.completed ? classes.isCompleted : ''}>{summaryDisplay}</TableCell>
         <TableCell><IconButton onClick={this.toggleEditMode}>{this.state.inEditMode ? <Icon onClick={this.updateTodo}>check</Icon> : <Icon>create</Icon>}</IconButton></TableCell>
-        <TableCell><IconButton onClick={this.props.remove}><Icon>delete_forever</Icon></IconButton></TableCell>
+        <TableCell align="center"><IconButton onClick={this.props.remove}><Icon>delete_forever</Icon></IconButton></TableCell>
       </TableRow>
     );
   }

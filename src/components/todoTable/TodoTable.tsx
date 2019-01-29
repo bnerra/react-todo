@@ -18,11 +18,13 @@ import TableFooter from '@material-ui/core/TableFooter';
 
 export interface TodoTableProps extends WithStyles<typeof styles> {
   taskItems: JSX.Element[],
-  completedCount: number
+  todoCount: number,
+  completedCount: number,
+  clearAll: () => void,
 }
 
 export interface TodoTableState {
-
+  clearDisable: boolean
 }
 
 
@@ -35,20 +37,42 @@ class TodoTable extends React.Component <TodoTableProps, TodoTableState> {
     super(props);
 
     this.state = {
-
+      clearDisable: true
     };
 
   }
 
   renderTodoCount(): JSX.Element {
-    const itemword = this.props.completedCount === 1 ? 'item' : 'items';
+    const itemword = this.props.todoCount === 1 ? 'item' : 'items';
 
     return (
       <span>
-        <strong>{this.props.completedCount || 'No'} {itemword} left</strong>
+        <strong>{this.props.todoCount || 'No'} {itemword} left</strong>
       </span>
     )
   }
+
+  // renderFilters(): JSX.Element {
+  //   return ()
+  // }
+
+  renderClearButton(): JSX.Element {
+    const {completedCount} = this.props;
+    if (completedCount! > 0) {
+      this.state.clearDisable = false
+    } else {
+      this.state.clearDisable = true
+    }
+    return (
+      <TableCell>
+          <Button disabled={this.state.clearDisable} onClick={this.props.clearAll}>Clear Completed</Button>
+        </TableCell>
+    )
+  }
+
+  onClickFilter() {}
+
+  clearCompleted() {}
 
   render() {
 
@@ -65,7 +89,7 @@ class TodoTable extends React.Component <TodoTableProps, TodoTableState> {
                   <TableCell>Title</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Edit</TableCell>
-                  <TableCell>Delete</TableCell>
+                  <TableCell align="center">Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{this.props.taskItems}</TableBody>
@@ -81,9 +105,7 @@ class TodoTable extends React.Component <TodoTableProps, TodoTableState> {
                     <Button>Completed</Button>
                   </TableCell>
                   <TableCell></TableCell>
-                  <TableCell>
-                    <Button>Clear Completed</Button>
-                  </TableCell>
+                    {this.renderClearButton()}
                 </TableRow>
               </TableFooter>
             </Table>
