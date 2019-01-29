@@ -5,6 +5,9 @@ const styles = (theme: Theme) => createStyles({
     width: '75%',
     overflowX: 'auto'
   },
+  todoCount: {
+    paddingRight: '8px'
+  },
   todoTable: {
     marginTop: '5%'
   }

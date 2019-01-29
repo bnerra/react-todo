@@ -71,7 +71,7 @@ class TodoTable extends React.Component <TodoTableProps, TodoTableState> {
               <TableBody>{this.props.taskItems}</TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell>
+                  <TableCell className={classes.todoCount}>
                     {this.renderTodoCount()}
                   </TableCell>
                   <TableCell></TableCell>
