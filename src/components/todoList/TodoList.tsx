@@ -11,7 +11,6 @@ import { WithStyles, withStyles } from '@material-ui/core/styles';
 
 import Typography from '@material-ui/core/Typography';
 
-//TODO: Componentize TodoTable
 //TODO: Properly set state
 //TODO: Proper error handling
 //TODO: Data validation
@@ -21,7 +20,8 @@ export interface TodoListProps extends WithStyles<typeof styles> {
 }
 
 export interface TodoListState {
-  todoData: NewTodo[]
+  todoData: NewTodo[],
+  completedCount: number
 }
 
 
@@ -34,7 +34,8 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
     super(props);
 
     this.state = {
-      todoData: []
+      todoData: [],
+      completedCount: null
     };
 
     this.addTodo = this.addTodo.bind(this);
@@ -104,6 +105,11 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
 
   }
 
+  public getCompletedCount() {
+    const completed = this.state.todoData.map(x => x.isComplete);
+    return completed;
+  }
+
 
   render() {
 
@@ -117,13 +123,19 @@ class TodoList extends React.Component <TodoListProps, TodoListState> {
       )
     });
 
+    let count = 0;
+
+    let todoCount = this.state.todoData.map(x => x.isComplete);
+
+    todoCount.forEach(x => !x ? count++ : x);
+
     return (
       <div className="todoListMain">
         <Grid container spacing={32} direction="column" alignItems="center" justify="center">
           <Grid item xs={6}><Typography variant="h3">Todo List:</Typography></Grid>
           <Grid item xs={6}><AddDialog add={(e: any) => this.addTodo(e)}/></Grid>
         </Grid>
-        <TodoTable taskItems={taskItems}/>
+        <TodoTable taskItems={taskItems} completedCount={count}/>
       </div>
     )
   }
